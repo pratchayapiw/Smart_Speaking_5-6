@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart Speaking Test 2.0 | Listening & Speaking 1/2569</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--pri:#38bdf8;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--txt:#e2e8f0;--mut:#94a3b8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--txt);padding:16px;line-height:1.6}
+.wrap{max-width:820px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
+h1{font-size:1.5rem;color:var(--pri);margin-bottom:4px}
+h2{font-size:1.15rem;margin-bottom:12px;color:var(--pri)}
+.sub{color:var(--mut);font-size:.9rem;margin-bottom:18px}
+label{display:block;font-size:.85rem;color:var(--mut);margin:10px 0 4px}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0b1220;color:var(--txt);font-size:1rem}
+button{cursor:pointer;border:none;border-radius:10px;padding:13px 18px;font-size:1rem;font-weight:600;transition:.2s}
+.btn{background:var(--pri);color:#04293d;width:100%;margin-top:16px}
+.btn:hover{filter:brightness(1.1)}
+.btn2{background:#334155;color:var(--txt)}
+.mic{background:var(--bad);color:#fff;width:100%;font-size:1.05rem;padding:18px}
+.mic.rec{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.bar{height:8px;background:#0b1220;border-radius:99px;overflow:hidden;margin:10px 0 18px}
+.bar>i{display:block;height:100%;background:var(--pri);transition:.3s}
+.q{font-size:1.3rem;font-weight:700;margin:6px 0 4px}
+.tag{display:inline-block;font-size:.72rem;background:#0b1220;border:1px solid var(--line);color:var(--mut);padding:3px 10px;border-radius:99px}
+.opt{display:block;width:100%;text-align:left;background:#0b1220;border:1px solid var(--line);color:var(--txt);padding:13px;border-radius:10px;margin-top:9px;font-weight:500}
+.opt:hover{border-color:var(--pri)}
+.opt.sel{border-color:var(--pri);background:#0d2b3d}
+.box{background:#0b1220;border:1px dashed var(--line);border-radius:10px;padding:14px;margin-top:14px;min-height:56px;font-size:1rem}
+.fb{margin-top:12px;padding:12px;border-radius:10px;font-weight:600}
+.g{background:#052e16;color:#86efac}.y{background:#3b2a06;color:#fcd34d}.r{background:#3f1212;color:#fca5a5}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.stat{background:#0b1220;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.stat b{display:block;font-size:1.7rem;color:var(--pri)}
+.stat span{font-size:.8rem;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:12px}
+th,td{border-bottom:1px solid var(--line);padding:9px;text-align:left}
+th{color:var(--mut);font-weight:600}
+.hide{display:none}
+.row{display:flex;gap:10px;margin-top:14px}.row>*{flex:1}
+.score{font-size:3rem;font-weight:800;color:var(--pri);text-align:center}
+.note{font-size:.8rem;color:var(--mut);margin-top:8px}
+</style>
+</head>
+<body><div class="wrap">
+
+<!-- ========== LOGIN ========== -->
+<div id="s1" class="card">
+  <h1>🎤 Smart Speaking Test 2.0</h1>
+  <div class="sub">Listening &amp; Speaking · Final Exam Term 1/2569 · 20 ข้อ · 30 คะแนน</div>
+  <label>ชื่อ–นามสกุล</label><input id="nm" placeholder="เช่น สมหญิง ใจดี">
+  <label>ชั้น/ห้อง</label><input id="cl" placeholder="เช่น ม.4/2">
+  <label>เลขที่</label><input id="no" type="number" placeholder="เช่น 12">
+  <button class="btn" onclick="start()">เริ่มทำข้อสอบ ▶</button>
+  <div class="row"><button class="btn2" onclick="teacher()">👩‍🏫 Teacher Dashboard</button></div>
+  <div class="note">แนะนำ Chrome/Edge · อนุญาตไมโครโฟน · ข้อสอบสุ่มใหม่ทุกครั้ง</div>
+</div>
+
+<!-- ========== TEST ========== -->
+<div id="s2" class="card hide">
+  <div style="display:flex;justify-content:space-between;font-size:.85rem;color:var(--mut)">
+    <span id="pg">ข้อ 1 / 20</span><span id="sc">คะแนน 0 / 30</span>
+  </div>
+  <div class="bar"><i id="pb" style="width:5%"></i></div>
+  <span class="tag" id="cat">Ability</span>
+  <div class="q" id="qt">Can you sing?</div>
+  <div class="note">🗣️ กดปุ่มไมค์แล้วพูดคำตอบเป็นภาษาอังกฤษ (ได้คะแนนเต็ม) หรือเลือกตัวเลือกด้านล่าง (ได้สูงสุด 1.0)</div>
+  <button class="mic" id="mic" onclick="rec()">🎙️ กดเพื่อพูด</button>
+  <div class="box" id="tr"><span style="color:#64748b">คำพูดของคุณจะแสดงที่นี่…</span></div>
+  <div id="opts"></div>
+  <div id="fb"></div>
+  <button class="btn" id="nx" onclick="next()">ตรวจคำตอบ ✓</button>
+</div>
+
+<!-- ========== RESULT ========== -->
+<div id="s3" class="card hide">
+  <h2>📊 ผลการสอบ</h2>
+  <div id="rs"></div>
+  <div class="row"><button class="btn2" onclick="location.reload()">ทำใหม่</button>
+  <button class="btn2" onclick="teacher()">Dashboard</button></div>
+</div>
+
+<!-- ========== DASHBOARD ========== -->
+<div id="s4" class="card hide">
+  <h2>👩‍🏫 Teacher Dashboard</h2>
+  <div class="grid" id="st"></div>
+  <div style="overflow-x:auto"><table id="tb"></table></div>
+  <div class="row">
+    <button class="btn2" onclick="csv()">⬇ Export CSV</button>
+    <button class="btn2" onclick="clr()">🗑 ล้างข้อมูล</button>
+    <button class="btn2" onclick="location.reload()">← กลับ</button>
+  </div>
+</div>
+
+</div>
+<script>
+const TEACHER_PIN="1234", TOTAL=20, PER=1.5, PASS=.6;
+
+/* ---------- คลังข้อสอบ 37 ข้อ (สุ่มมา 20) ---------- */
+const BANK=[
+{c:"Ability",q:"Can you sing?",a:"Yes, I can.",k:[["yes","yeah","no","nah"],["can"]]},
+{c:"Ability",q:"Can you speak Spanish?",a:"No, I can't.",k:[["no","nah","yes"],["can"]]},
+{c:"Ability",q:"Can you play tennis?",a:"Yes, but only a little.",k:[["yes","yeah"],["little","not very well"]]},
+{c:"Ability",q:"Do you know how to ski?",a:"Yes, I do.",k:[["yes","yeah","no"],["do"]]},
+{c:"Ability",q:"Do you know how to use a computer?",a:"Yes, I can use a computer.",k:[["yes","yeah"],["use","computer"]]},
+{c:"Ability",q:"Do you know how to play the piano?",a:"I know how to play the piano.",k:[["know","can"],["play"],["piano"]]},
+{c:"Personal",q:"Where are you from?",a:"I'm from England.",k:[["i'm","i am","im"],["from"],["england"]]},
+{c:"Personal",q:"Which part of England are you from?",a:"London.",k:[["london"]]},
+{c:"Personal",q:"What do you do?",a:"I'm a salesperson.",k:[["i'm","i am","im"],["salesperson","sales person"]]},
+{c:"Personal",q:"Who do you work for?",a:"I work for IBM.",k:[["work"],["for"],["ibm"]]},
+{c:"Personal",q:"Where do you work?",a:"I work in Richmond.",k:[["work"],["in"],["richmond"]]},
+{c:"Personal",q:"What are you studying?",a:"I'm studying Economics.",k:[["studying","study"],["economics"]]},
+{c:"Personal",q:"What school do you go to?",a:"I go to the University of Colorado.",k:[["go to"],["university"],["colorado"]]},
+{c:"Personal",q:"How old are you?",a:"I'm twenty-five.",k:[["i'm","i am","im"],["twenty","25"]]},
+{c:"Personal",q:"Are you married?",a:"Yes, I am.",k:[["yes","no"],["i am","i'm","im","not"]]},
+{c:"Personal",q:"Do you have any children?",a:"No, I don't.",k:[["no","yes"],["don't","dont","do"]]},
+{c:"Time",q:"Ask a stranger for the time politely.",a:"Excuse me, what time is it?",k:[["excuse me","pardon me","could you"],["time"]]},
+{c:"Time",q:"It is 2:05. What time is it?",a:"It's five past two.",k:[["five"],["past","after","two oh five","2 05"]]},
+{c:"Time",q:"It is 2:50. What time is it?",a:"It's ten to three.",k:[["ten"],["to","before"],["three"]]},
+{c:"Time",q:"It is 4:15. What time is it?",a:"It's a quarter past four.",k:[["quarter"],["past","after"],["four"]]},
+{c:"Time",q:"It is 2:30. What time is it?",a:"It's half past two.",k:[["half","thirty"],["past","two"]]},
+{c:"Time",q:"Ask someone for today's date politely.",a:"Excuse me, what's today's date?",k:[["excuse me","pardon me","could you","do you know"],["date"]]},
+{c:"Time",q:"Today is May 1. What's the date?",a:"It's May first.",k:[["may"],["first","1st"]]},
+{c:"Time",q:"Today is Tuesday, May 1. What's the date?",a:"It's Tuesday, the first of May.",k:[["tuesday"],["first","1st"],["may"]]},
+{c:"Time",q:"When is St. Patrick's Day?",a:"It's March seventeenth.",k:[["march"],["seventeen","17th","17"]]},
+{c:"Routine",q:"What do you do after school?",a:"I go to the library.",k:[["i go","we go","go"],["library"]]},
+{c:"Routine",q:"What does she do on Sunday?",a:"She goes to the park.",k:[["she goes","goes"],["park"]]},
+{c:"Routine",q:"Who do you have lunch with?",a:"I have lunch with friends.",k:[["i have","have"],["lunch"],["friends"]]},
+{c:"Routine",q:"Who does he have lunch with?",a:"He has lunch with classmates.",k:[["he has","has"],["lunch"],["classmates"]]},
+{c:"Routine",q:"Do you get up before 7:00?",a:"Yes, I do.",k:[["yes","no"],["do","don't","dont"]]},
+{c:"Routine",q:"Does he watch TV after dinner?",a:"No, he doesn't.",k:[["no","yes"],["doesn't","doesnt","does"]]},
+{c:"Location",q:"Where is the phone book?",a:"It's on the desk, by the telephone.",k:[["it's","it is","its"],["on"],["desk"]]},
+{c:"Location",q:"Where are the pens?",a:"They're in the drawer, next to the dictionary.",k:[["they're","they are","theyre"],["in"],["drawer"]]},
+{c:"Location",q:"Where does the teapot go?",a:"It goes behind the sink, on the shelf.",k:[["it goes","goes"],["behind"],["sink"]]},
+{c:"Location",q:"Where do the magazines go?",a:"They go under the coffee table.",k:[["they go","go"],["under"],["coffee table","table"]]},
+{c:"Location",q:"Where do the sugar tongs go?",a:"They go between the radio and the clock.",k:[["they go","go"],["between"],["radio"],["clock"]]},
+{c:"Location",q:"Tell your friend to put the sugar bowl on the counter.",a:"Pick up the sugar bowl and put it on the counter.",k:[["pick up","take"],["sugar bowl"],["put"],["counter"]]}
+];
+
+/* ---------- Utils ---------- */
+const sh=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
+const norm=s=>" "+s.toLowerCase().replace(/[^a-z0-9' ]/g," ").replace(/\s+/g," ").trim()+" ";
+let Q=[],i=0,total=0,log=[],pick=null,tx="",rg=null,busy=false;
+
+function start(){
+ const n=nm.value.trim(),c=cl.value.trim(),o=no.value.trim();
+ if(!n||!c||!o){alert("กรุณากรอกชื่อ ชั้น และเลขที่ให้ครบ");return}
+ Q=sh(BANK).slice(0,TOTAL); s1.classList.add("hide"); s2.classList.remove("hide"); show();
+}
+
+function show(){
+ const q=Q[i]; pick=null; tx="";
+ cat.textContent=q.c; qt.textContent=q.q;
+ pg.textContent=`ข้อ ${i+1} / ${TOTAL}`;
+ sc.textContent=`คะแนน ${total.toFixed(2)} / 30`;
+ pb.style.width=((i+1)/TOTAL*100)+"%";
+ tr.innerHTML='<span style="color:#64748b">คำพูดของคุณจะแสดงที่นี่…</span>';
+ fb.innerHTML=""; nx.textContent="ตรวจคำตอบ ✓"; nx.onclick=next;
+ const pool=BANK.filter(x=>x.c===q.c&&x.a!==q.a);
+ const opts=sh([q.a,...sh(pool).slice(0,3).map(x=>x.a)]);
+ document.getElementById("opts").innerHTML=opts.map(t=>
+  `<button class="opt" onclick="sel(this,'${t.replace(/'/g,"\\'")}')">${t}</button>`).join("");
+}
+function sel(el,t){document.querySelectorAll(".opt").forEach(e=>e.classList.remove("sel"));el.classList.add("sel");pick=t}
+
+/* ---------- Speech Recognition ---------- */
+function rec(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){alert("เบราว์เซอร์นี้ไม่รองรับการรับเสียง กรุณาใช้ Chrome หรือ Edge");return}
+ if(busy){rg&&rg.stop();return}
+ rg=new SR(); rg.lang="en-US"; rg.interimResults=true; rg.maxAlternatives=3;
+ busy=true; mic.classList.add("rec"); mic.textContent="⏹️ กำลังฟัง… (กดเพื่อหยุด)";
+ rg.onresult=e=>{let s="";for(const r of e.results)s+=r[0].transcript;tx=s;tr.textContent=s};
+ rg.onerror=()=>{tr.textContent="⚠️ ไม่ได้ยินเสียง ลองใหม่อีกครั้ง"};
+ rg.onend=()=>{busy=false;mic.classList.remove("rec");mic.textContent="🎙️ กดเพื่อพูด"};
+ rg.start();
+}
+
+/* ---------- Smart Check ---------- */
+function grade(q){
+ let pt=0,mode="-",said=tx.trim();
+ if(said){
+  const t=norm(said);
+  const hit=q.k.filter(g=>g.some(w=>t.includes(" "+w)||t.includes(w+" ")||t.includes(w))).length;
+  const r=hit/q.k.length;
+  pt=Math.round(PER*r*4)/4; mode="Speaking";                 // พูด = ได้เต็ม 1.5
+ }else if(pick){
+  pt=pick===q.a?1.0:0; mode="Choice";                        // เลือก = เต็ม 1.0
+ }
+ return{pt,mode,said:said||pick||"(ไม่ตอบ)"};
+}
+
+function next(){
+ const q=Q[i]; if(busy){rg.stop();return}
+ const g=grade(q); total+=g.pt;
+ log.push({no:i+1,cat:q.c,q:q.q,ans:g.said,model:q.a,pt:g.pt,mode:g.mode});
+ const cls=g.pt>=1.25?"g":g.pt>=.75?"y":"r";
+ fb.innerHTML=`<div class="fb ${cls}">${g.pt>=1.25?"✅ ดีมาก":g.pt>=.75?"🟡 ใช้ได้ ลองพูดให้ครบประโยค":"❌ ยังไม่ตรง"} · ได้ ${g.pt.toFixed(2)} / 1.50 (${g.mode})<br>
+ <span style="font-weight:400">เฉลย: <b>${q.a}</b></span></div>`;
+ sc.textContent=`คะแนน ${total.toFixed(2)} / 30`;
+ nx.textContent=i<TOTAL-1?"ข้อถัดไป →":"ดูผลสอบ 🏁";
+ nx.onclick=()=>{i++;i<TOTAL?show():finish()};
+}
+
+function finish(){
+ const pct=total/30, pass=pct>=PASS;
+ const rec_={name:nm.value.trim(),cls:cl.value.trim(),no:no.value.trim(),
+  score:+total.toFixed(2),pct:Math.round(pct*100),pass,
+  date:new Date().toLocaleString("th-TH"),detail:log};
+ const db=JSON.parse(localStorage.getItem("sst")||"[]"); db.push(rec_);
+ localStorage.setItem("sst",JSON.stringify(db));
+ const by={}; log.forEach(l=>{by[l.cat]=by[l.cat]||[0,0];by[l.cat][0]+=l.pt;by[l.cat][1]+=PER});
+ s2.classList.add("hide"); s3.classList.remove("hide");
+ rs.innerHTML=`<div class="score">${total.toFixed(2)} / 30</div>
+ <div style="text-align:center;margin-bottom:16px" class="${pass?'':''}">
+ <b style="color:${pass?'var(--ok)':'var(--bad)'}">${pass?"🎉 ผ่านเกณฑ์":"📚 ยังไม่ผ่าน (เกณฑ์ 18/30)"}</b>
+ <div class="note">${rec_.name} · ${rec_.cls} · เลขที่ ${rec_.no} · ${rec_.pct}%</div></div>
+ <h2>คะแนนรายหมวด</h2><div class="grid">${Object.entries(by).map(([k,v])=>
+ `<div class="stat"><b>${v[0].toFixed(1)}</b><span>${k}<br>เต็ม ${v[1].toFixed(1)}</span></div>`).join("")}</div>
+ <h2 style="margin-top:20px">รายละเอียด</h2>
+ <div style="overflow-x:auto"><table><tr><th>#</th><th>คำถาม</th><th>คำตอบของนักเรียน</th><th>เฉลย</th><th>คะแนน</th></tr>
+ ${log.map(l=>`<tr><td>${l.no}</td><td>${l.q}</td><td>${l.ans}</td><td>${l.model}</td>
+ <td style="color:${l.pt>=1.25?'#86efac':l.pt>=.75?'#fcd34d':'#fca5a5'}">${l.pt.toFixed(2)}</td></tr>`).join("")}</table></div>
+ <div class="note">* คะแนนนี้ตรวจจาก transcript (Content + Grammar) ครูควรฟังเสียงจริงเพื่อประเมิน Pronunciation/Fluency เพิ่มเติม</div>`;
+}
+
+/* ---------- Dashboard ---------- */
+function teacher(){
+ if(prompt("กรอกรหัสครู:")!==TEACHER_PIN){alert("รหัสไม่ถูกต้อง");return}
+ const db=JSON.parse(localStorage.getItem("sst")||"[]");
+ [s1,s2,s3].forEach(e=>e.classList.add("hide")); s4.classList.remove("hide");
+ const n=db.length,avg=n?db.reduce((a,b)=>a+b.score,0)/n:0,p=db.filter(x=>x.pass).length;
+ st.innerHTML=`<div class="stat"><b>${n}</b><span>ผู้เข้าสอบ</span></div>
+ <div class="stat"><b>${avg.toFixed(2)}</b><span>คะแนนเฉลี่ย /30</span></div>
+ <div class="stat"><b>${p}</b><span>ผ่านเกณฑ์</span></div>
+ <div class="stat"><b>${n?Math.round(p/n*100):0}%</b><span>อัตราผ่าน</span></div>`;
+ tb.innerHTML=`<tr><th>#</th><th>ชื่อ</th><th>ชั้น</th><th>เลขที่</th><th>คะแนน</th><th>%</th><th>ผล</th><th>วันเวลา</th></tr>`+
+ (n?db.map((r,k)=>`<tr><td>${k+1}</td><td>${r.name}</td><td>${r.cls}</td><td>${r.no}</td>
+ <td>${r.score.toFixed(2)}</td><td>${r.pct}%</td>
+ <td style="color:${r.pass?'#86efac':'#fca5a5'}">${r.pass?"ผ่าน":"ไม่ผ่าน"}</td><td>${r.date}</td></tr>`).join("")
+ :`<tr><td colspan="8" style="text-align:center;color:#64748b">ยังไม่มีข้อมูลการสอบ</td></tr>`);
+}
+function csv(){
+ const db=JSON.parse(localStorage.getItem("sst")||"[]");
+ if(!db.length){alert("ยังไม่มีข้อมูล");return}
+ let s="ชื่อ,ชั้น,เลขที่,คะแนน,เต็ม,ร้อยละ,ผล,วันเวลา\n";
+ db.forEach(r=>s+=`"${r.name}","${r.cls}",${r.no},${r.score},30,${r.pct},${r.pass?"ผ่าน":"ไม่ผ่าน"},"${r.date}"\n`);
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob(["\uFEFF"+s],{type:"text/csv;charset=utf-8"}));
+ a.download="speaking_test_results.csv"; a.click();
+}
+function clr(){if(confirm("ลบผลสอบทั้งหมด?")){localStorage.removeItem("sst");teacher()}}
+</script>
+</body></html>
