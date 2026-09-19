@@ -37,11 +37,68 @@
     <div style="font-size:42px">🇬🇧</div>
   </div>
 
-  <label>Full Name (English only) *</label>
-  <input id="nm" placeholder="e.g. Somying Jaidee" autocomplete="off" oninput="chkName()" onblur="chkName()">
-  <div class="err" id="nmErr">⚠️ กรอกชื่อ–นามสกุลเป็นภาษาอังกฤษ (อย่างน้อย 2 คำ)</div>
-  <label>ชั้น/ห้อง</label><input id="cl" placeholder="e.g. M.4/2">
-  <label>เลขที่</label><input id="no" type="number" placeholder="e.g. 12">
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+  <div>
+    <label>ชื่อ (English only) *</label>
+    <input id="fn"
+           placeholder="e.g. Somying"
+           autocomplete="off"
+           oninput="chkNamePart('fn','fnErr')"
+           onblur="chkNamePart('fn','fnErr')">
+
+    <div class="err" id="fnErr">
+      ⚠️ กรุณากรอกชื่อเป็นภาษาอังกฤษเท่านั้น
+    </div>
+  </div>
+
+  <div>
+    <label>นามสกุล (English only) *</label>
+    <input id="sn"
+           placeholder="e.g. Jaidee"
+           autocomplete="off"
+           oninput="chkNamePart('sn','snErr')"
+           onblur="chkNamePart('sn','snErr')">
+
+    <div class="err" id="snErr">
+      ⚠️ กรุณากรอกนามสกุลเป็นภาษาอังกฤษเท่านั้น
+    </div>
+  </div>
+
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+  <div>
+    <label>ชั้น / ห้อง *</label>
+    <input id="cl"
+           placeholder="เช่น 4/1"
+           inputmode="numeric"
+           maxlength="5"
+           oninput="cleanClass()">
+
+    <div class="err" id="clErr">
+      ⚠️ กรุณากรอกชั้น/ห้อง เช่น 4/1 หรือ 5/10
+    </div>
+  </div>
+
+  <div>
+    <label>เลขที่ *</label>
+    <input id="no"
+           type="number"
+           min="1"
+           max="99"
+           step="1"
+           placeholder="เช่น 1 หรือ 10"
+           inputmode="numeric"
+           oninput="cleanNo()">
+
+    <div class="err" id="noErr">
+      ⚠️ กรุณากรอกเลขที่เป็นตัวเลข 1–99
+    </div>
+  </div>
+
+</div>
   <button class="btn" onclick="start()">เริ่มทำข้อสอบ ▶</button>
 
   <div class="step-row">
