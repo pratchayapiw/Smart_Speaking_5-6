@@ -3,64 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Speaking Test | Listening &amp; Speaking 1/2569</title>
+<title>Smart Speaking | Student</title>
 <style>
-:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--pri:#38bdf8;--ok:#22c55e;--bad:#ef4444;--txt:#e2e8f0;--mut:#94a3b8}
+:root{
+  --bg:#f7fbff;--card:#fff;--line:#e5edf6;--pri:#f84f86;--blue:#3aa9f7;
+  --ok:#22b573;--bad:#ef5364;--txt:#243557;--mut:#71809a;--navy:#17336b;
+  --softpink:#fff0f5;--softblue:#eaf7ff;--shadow:0 18px 45px rgba(35,50,82,.10)
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--txt);padding:16px;line-height:1.6}
-.wrap{max-width:860px;margin:0 auto}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
-h1{font-size:1.5rem;color:var(--pri)}h2{font-size:1.15rem;margin-bottom:12px;color:var(--pri)}
-.sub{color:var(--mut);font-size:.9rem;margin-bottom:18px}
-label{display:block;font-size:.85rem;color:var(--mut);margin:10px 0 4px}
-input{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0b1220;color:var(--txt);font-size:1rem}
-input.bad{border-color:var(--bad);background:#1a0b0b}input.good{border-color:var(--ok)}
-.err{color:#fca5a5;font-size:.8rem;margin-top:5px;display:none}
-button{cursor:pointer;border:none;border-radius:10px;padding:13px 18px;font-size:1rem;font-weight:600;transition:.2s}
-.btn{background:var(--pri);color:#04293d;width:100%;margin-top:16px}.btn:hover{filter:brightness(1.1)}
-.mic{background:var(--bad);color:#fff;width:100%;font-size:1.05rem;padding:18px}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans Thai","Segoe UI",Tahoma,sans-serif;
+  background:linear-gradient(180deg,#f7fcff 0%,#fff7fa 100%);
+  color:var(--txt);padding:0;line-height:1.6;min-height:100vh
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px 40px}
+.nav{
+  position:sticky;top:0;z-index:50;margin:0 -16px 24px;padding:0 16px;
+  background:rgba(255,255,255,.9);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line)
+}
+.nav-in{max-width:1120px;margin:auto;height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--navy);font-weight:900}
+.logo{
+  width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  color:#fff;font-size:22px;background:linear-gradient(135deg,var(--pri),var(--blue));
+  box-shadow:0 8px 20px rgba(248,79,134,.22)
+}
+.brand small{display:block;color:var(--mut);font-size:10px;font-weight:600}
+.navlinks{display:flex;gap:6px}
+.navlinks a{color:var(--mut);text-decoration:none;padding:8px 13px;border-radius:999px;font-size:13px}
+.navlinks a.active,.navlinks a:hover{background:var(--softpink);color:var(--pri)}
+.hero-strip{
+  background:linear-gradient(135deg,#fff1f7,#edf9ff);border:1px solid #fff;
+  border-radius:28px;padding:25px 28px;margin-bottom:18px;box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:space-between;gap:18px
+}
+.hero-title{display:flex;align-items:center;gap:15px}
+.hero-icon{width:64px;height:64px;border-radius:21px;display:grid;place-items:center;font-size:34px;background:#fff;box-shadow:0 10px 25px rgba(35,50,82,.08)}
+h1{font-size:clamp(1.55rem,4vw,2.25rem);color:var(--navy);line-height:1.15}
+h1 span{color:var(--pri)}
+h2{font-size:1.18rem;margin-bottom:12px;color:var(--navy)}
+.sub{color:var(--mut);font-size:.9rem;margin-top:5px}
+.card{
+  background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:24px;
+  padding:26px;margin-bottom:18px;box-shadow:var(--shadow)
+}
+#s1{position:relative;overflow:hidden}
+#s1:after{
+  content:"🎧  🇬🇧  🎙️";position:absolute;right:25px;top:18px;font-size:26px;opacity:.65
+}
+label{display:block;font-size:.84rem;color:var(--navy);font-weight:800;margin:13px 0 6px}
+input{
+  width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--line);
+  background:#fbfdff;color:var(--txt);font-size:1rem;outline:none
+}
+input:focus{border-color:#78cafa;box-shadow:0 0 0 4px var(--softblue)}
+input.bad{border-color:var(--bad);background:#fff5f6}
+input.good{border-color:var(--ok);background:#f4fff9}
+.err{color:#d94c5e;font-size:.8rem;margin-top:5px;display:none}
+button{cursor:pointer;border:none;border-radius:13px;padding:13px 18px;font-size:1rem;font-weight:800;transition:.2s}
+button:hover{transform:translateY(-1px)}
+.btn{
+  background:linear-gradient(135deg,var(--pri),#ff7da5);color:#fff;width:100%;margin-top:18px;
+  box-shadow:0 10px 22px rgba(248,79,134,.18)
+}
+.mic{
+  background:linear-gradient(135deg,var(--blue),#66c9ff);color:#fff;width:100%;
+  font-size:1.05rem;padding:17px;border-radius:16px;box-shadow:0 10px 22px rgba(58,169,247,.18)
+}
 .mic:disabled{opacity:.45;cursor:not-allowed}
-.mic.rec{animation:pulse 1s infinite}@keyframes pulse{50%{opacity:.55}}
-.bar{height:8px;background:#0b1220;border-radius:99px;overflow:hidden;margin:10px 0 8px}
-.bar>i{display:block;height:100%;background:var(--pri);transition:.3s}
-.tbar{height:6px;background:#0b1220;border-radius:99px;overflow:hidden;margin-bottom:16px}
+.mic.rec{animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.55;transform:scale(.99)}}
+.bar{height:9px;background:#edf2f8;border-radius:99px;overflow:hidden;margin:10px 0 9px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--pri));transition:.3s}
+.tbar{height:7px;background:#edf2f8;border-radius:99px;overflow:hidden;margin-bottom:17px}
 .tbar>i{display:block;height:100%;background:var(--ok);transition:1s linear}
-.q{font-size:1.3rem;font-weight:700;margin:6px 0 4px}
-.tag{display:inline-block;font-size:.72rem;background:#0b1220;border:1px solid var(--line);color:var(--mut);padding:3px 10px;border-radius:99px}
-.clock{float:right;font-weight:800;font-size:1.1rem;color:var(--ok)}.clock.low{color:var(--bad)}
-.opt{display:block;width:100%;text-align:left;background:#0b1220;border:1px solid var(--line);color:var(--txt);padding:13px;border-radius:10px;margin-top:9px;font-weight:500}
-.opt:hover{border-color:var(--pri)}.opt.sel{border-color:var(--pri);background:#0d2b3d}
-.box{background:#0b1220;border:1px dashed var(--line);border-radius:10px;padding:14px;margin-top:14px;min-height:56px}
-.fb{margin-top:12px;padding:12px;border-radius:10px;font-weight:600}
-.g{background:#052e16;color:#86efac}.y{background:#3b2a06;color:#fcd34d}.r{background:#3f1212;color:#fca5a5}
+.q{font-size:1.35rem;font-weight:900;margin:8px 0 5px;color:var(--navy)}
+.tag{display:inline-block;font-size:.72rem;background:var(--softblue);border:1px solid #d9eefc;color:#2e8cc8;padding:4px 11px;border-radius:99px;font-weight:800}
+.clock{float:right;font-weight:900;font-size:1.1rem;color:var(--ok)}
+.clock.low{color:var(--bad)}
+.opt{
+  display:block;width:100%;text-align:left;background:#fbfdff;border:1px solid var(--line);
+  color:var(--txt);padding:13px;border-radius:13px;margin-top:9px;font-weight:600
+}
+.opt:hover{border-color:#71c5f8;background:var(--softblue)}
+.opt.sel{border-color:var(--pri);background:var(--softpink);box-shadow:0 0 0 3px #ffe0eb}
+.box{
+  background:#fbfdff;border:1px dashed #cfdceb;border-radius:14px;padding:14px;
+  margin-top:14px;min-height:58px;color:var(--mut)
+}
+.fb{margin-top:12px;padding:13px;border-radius:14px;font-weight:800}
+.g{background:#effcf6;color:#15935b;border:1px solid #c9f1dd}
+.y{background:#fff9e9;color:#b57b00;border:1px solid #f5df9d}
+.r{background:#fff1f3;color:#c63e50;border:1px solid #f5c6ce}
 .fb ul{margin:6px 0 0 18px;font-weight:400}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
-.stat{background:#0b1220;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.stat{background:#fbfdff;border:1px solid var(--line);border-radius:16px;padding:15px;text-align:center}
 .stat b{display:block;font-size:1.7rem;color:var(--pri)}.stat span{font-size:.8rem;color:var(--mut)}
-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:12px}
-th,td{border-bottom:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}
-th{color:var(--mut)}audio{width:185px;height:34px}
-.hide{display:none}.score{font-size:3rem;font-weight:800;color:var(--pri);text-align:center}
+table{width:100%;border-collapse:collapse;font-size:.84rem;margin-top:12px}
+th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+th{color:var(--mut);background:#fbfdff;position:sticky;top:0}
+audio{width:185px;height:34px}
+.hide{display:none}.score{font-size:3rem;font-weight:900;color:var(--pri);text-align:center}
 .note{font-size:.8rem;color:var(--mut);margin-top:8px}
+.step-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}
+.step b{display:block;color:var(--navy);font-size:13px}.step span{font-size:11px;color:var(--mut)}
+.footer{text-align:center;color:var(--mut);font-size:12px;padding:4px 0 10px}
+@media(max-width:700px){
+  .navlinks a:nth-child(2){display:none}
+  .hero-strip{padding:20px}.hero-strip:after{display:none}
+  .hero-icon{width:54px;height:54px;font-size:28px}
+  .step-row{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .wrap{padding:0 11px 30px}
+  .nav{margin:0 -11px 18px;padding:0 11px}
+  .brand small{display:none}
+  .nav-in{height:64px}
+  .navlinks a{padding:7px 9px;font-size:12px}
+  .card{padding:19px;border-radius:20px}
+}
 </style>
 </head>
-<body><div class="wrap">
+<body>
+<div class="wrap">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <div class="logo">🎧</div>
+      <div>Smart Speaking<small>English for a Brighter You</small></div>
+    </a>
+    <div class="navlinks">
+      <a href="index.html">⌂ Home</a>
+      <a class="active" href="student.html">🎤 Student</a>
+      <a href="teacher.html">📊 Teacher</a>
+    </div>
+  </div>
+</nav>
 
 <div id="s1" class="card">
-  <h1>🎤 Speaking Test</h1>
-  <div class="sub">Listening &amp; Speaking · Final Exam 1/2569 · 20 ข้อ · 30 คะแนน</div>
+  <div class="hero-strip">
+    <div class="hero-title">
+      <div class="hero-icon">🎙️</div>
+      <div>
+        <h1>Speaking <span>Test</span></h1>
+        <div class="sub">Listening &amp; Speaking · Final Exam 1/2569 · 20 ข้อ · 30 คะแนน</div>
+      </div>
+    </div>
+    <div style="font-size:42px">🇬🇧</div>
+  </div>
+
   <label>Full Name (English only) *</label>
   <input id="nm" placeholder="e.g. Somying Jaidee" autocomplete="off" oninput="chkName()" onblur="chkName()">
   <div class="err" id="nmErr">⚠️ กรอกชื่อ–นามสกุลเป็นภาษาอังกฤษ (อย่างน้อย 2 คำ)</div>
   <label>ชั้น/ห้อง</label><input id="cl" placeholder="e.g. M.4/2">
   <label>เลขที่</label><input id="no" type="number" placeholder="e.g. 12">
   <button class="btn" onclick="start()">เริ่มทำข้อสอบ ▶</button>
+
+  <div class="step-row">
+    <div class="step">🎧<b>Listen</b><span>ฟังและทำความเข้าใจ</span></div>
+    <div class="step">🧠<b>Think</b><span>คิดก่อนตอบ</span></div>
+    <div class="step">🎙️<b>Speak</b><span>พูดอย่างมั่นใจ</span></div>
+  </div>
   <div class="note">📱 ใช้ Chrome/Edge · อนุญาตไมโครโฟน · ข้อละ <b>90 วินาที</b> · ข้อสอบสุ่มใหม่ทุกครั้ง</div>
 </div>
 
 <div id="s2" class="card hide">
   <div style="display:flex;justify-content:space-between;font-size:.85rem;color:var(--mut)">
-    <span id="pg"></span><span id="sc"></span></div>
+    <span id="pg"></span><span id="sc"></span>
+  </div>
   <div class="bar"><i id="pb"></i></div>
   <span class="tag" id="cat"></span><span class="clock" id="ck"></span>
   <div class="tbar"><i id="tp" style="width:100%"></i></div>
@@ -71,8 +185,13 @@ th{color:var(--mut)}audio{width:185px;height:34px}
   <button class="btn" id="nx">ตรวจคำตอบ ✓</button>
 </div>
 
-<div id="s3" class="card hide"><h2>📊 ผลการสอบของคุณ</h2><div id="rs"></div>
-  <button class="btn" onclick="location.reload()">กลับหน้าแรก</button></div>
+<div id="s3" class="card hide">
+  <h2>📊 ผลการสอบของคุณ</h2>
+  <div id="rs"></div>
+  <button class="btn" onclick="location.reload()">กลับหน้าแรก</button>
+</div>
+
+<div class="footer">Smart Speaking · Listen • Think • Speak • Be Confident 💗</div>
 
 </div>
 <script>
@@ -305,4 +424,5 @@ function finish(){
  }else{const e=document.getElementById("sync");if(e)e.textContent="⚠️ ยังไม่ได้ตั้งค่า SHEET_URL";}
 }
 </script>
-</body></html>
+</body>
+</html>
