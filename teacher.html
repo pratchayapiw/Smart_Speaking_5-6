@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teacher Dashboard | Speaking Test 1/2569</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--line:#334155;--pri:#38bdf8;--ok:#22c55e;--bad:#ef4444;--txt:#e2e8f0;--mut:#94a3b8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--txt);padding:16px;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
+h1{font-size:1.5rem;color:var(--pri)}h2{font-size:1.1rem;margin:18px 0 10px;color:var(--pri)}
+input,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0b1220;color:var(--txt);font-size:1rem}
+button{cursor:pointer;border:none;border-radius:10px;padding:12px 16px;font-weight:600;transition:.2s}
+.btn{background:var(--pri);color:#04293d;width:100%;margin-top:14px}
+.btn2{background:#334155;color:var(--txt)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat{background:#0b1220;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.stat b{display:block;font-size:1.8rem;color:var(--pri)}.stat span{font-size:.8rem;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:10px}
+th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left}
+th{color:var(--mut);position:sticky;top:0;background:var(--card)}
+tr:hover td{background:#0b1220}
+.row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}
+.hide{display:none}.note{font-size:.8rem;color:var(--mut);margin-top:8px}
+.gb{height:9px;background:#0b1220;border-radius:99px;overflow:hidden;min-width:70px}
+.gb>i{display:block;height:100%;background:var(--pri)}
+.gb.warn>i{background:var(--bad)}
+.pill{padding:2px 9px;border-radius:99px;font-size:.75rem;font-weight:700}
+.pass{background:#052e16;color:#86efac}.fail{background:#3f1212;color:#fca5a5}
+</style>
+</head>
+<body><div class="wrap">
+
+<div id="lock" class="card">
+  <h1>👩‍🏫 Teacher Dashboard</h1>
+  <div class="note" style="margin-bottom:14px">หน้านี้สำหรับครูเท่านั้น · กรุณากรอกรหัสผ่าน</div>
+  <input id="pin" type="password" placeholder="รหัสครู" onkeydown="if(event.key==='Enter')unlock()">
+  <button class="btn" onclick="unlock()">เข้าสู่ระบบ 🔓</button>
+</div>
+
+<div id="app" class="hide">
+  <div class="card">
+    <h1>📊 Speaking Test Dashboard</h1>
+    <div class="note" id="upd">กำลังโหลดข้อมูล…</div>
+    <div class="row">
+      <select id="fcls" onchange="render()"><option value="">— ทุกห้อง —</option></select>
+      <button class="btn2" onclick="load()">🔄 รีเฟรช</button>
+      <button class="btn2" onclick="csv()">⬇ Export CSV</button>
+    </div>
+  </div>
+
+  <div class="card"><h2 style="margin-top:0">ภาพรวม</h2><div class="grid" id="ov"></div></div>
+  <div class="card"><h2 style="margin-top:0">🏫 สรุปรายห้อง</h2><div style="overflow-x:auto"><table id="tcls"></table></div></div>
+  <div class="card"><h2 style="margin-top:0">📚 คะแนนเฉลี่ยตามหมวด</h2><div style="overflow-x:auto"><table id="tcat"></table></div></div>
+  <div class="card"><h2 style="margin-top:0">⚠️ 10 ข้อที่ควรสอนซ้ำ</h2><div style="overflow-x:auto"><table id="tq"></table></div></div>
+  <div class="card"><h2 style="margin-top:0">🧑‍🎓 ผลรายบุคคล</h2><div style="overflow-x:auto;max-height:520px"><table id="tstu"></table></div></div>
+</div>
+
+</div>
+<script>
+/* ========== ⚙️ CONFIG ========== */
+const SHEET_URL = "วาง_URL_APPS_SCRIPT_ที่นี่";   // ต้องเป็น URL เดียวกับไฟล์นักเรียน
+const PIN = "1234";                               // เปลี่ยนรหัสครูตรงนี้
+
+let SUM=[],DET=[];
+function unlock(){
+ if(pin.value!==PIN)return alert("รหัสไม่ถูกต้อง");
+ lock.classList.add("hide");app.classList.remove("hide");load();
+}
+function load(){
+ upd.textContent="⏳ กำลังโหลดข้อมูลจาก Google Sheets…";
+ const cb="cb"+Date.now();
+ window[cb]=d=>{SUM=d.summary||[];DET=d.detail||[];fillCls();render();
+  upd.textContent="อัปเดตล่าสุด "+new Date().toLocaleString("th-TH")+" · ทั้งหมด "+SUM.length+" คน";
+  delete window[cb]};
+ const s=document.createElement("script");
+ s.src=SHEET_URL+"?action=get&callback="+cb;
+ s.onerror=()=>upd.textContent="❌ โหลดข้อมูลไม่สำเร็จ ตรวจสอบ SHEET_URL และการ Deploy";
+ document.body.appendChild(s);
+}
+function fillCls(){
+ const set=[...new Set(SUM.map(r=>r.cls))].sort();
+ fcls.innerHTML='<option value="">— ทุกห้อง —</option>'+set.map(c=>`<option>${c}</option>`).join("");
+}
+const F=()=>fcls.value?SUM.filter(r=>r.cls===fcls.value):SUM;
+const FD=()=>fcls.value?DET.filter(r=>r.cls===fcls.value):DET;
+
+function render(){
+ const S=F(),D=FD();
+ if(!S.length){ov.innerHTML='<div class="stat"><b>0</b><span>ยังไม่มีข้อมูล</span></div>';
+  tcls.innerHTML=tcat.innerHTML=tq.innerHTML=tstu.innerHTML="";return}
+ const sc=S.map(r=>+r.score),avg=sc.reduce((a,b)=>a+b,0)/S.length,p=S.filter(r=>r.pass==="ผ่าน").length;
+ ov.innerHTML=`<div class="stat"><b>${S.length}</b><span>ผู้เข้าสอบ</span></div>
+ <div class="stat"><b>${avg.toFixed(2)}</b><span>เฉลี่ย /30</span></div>
+ <div class="stat"><b>${Math.max(...sc).toFixed(2)}</b><span>สูงสุด</span></div>
+ <div class="stat"><b>${Math.min(...sc).toFixed(2)}</b><span>ต่ำสุด</span></div>
+ <div class="stat"><b>${p}</b><span>ผ่านเกณฑ์</span></div>
+ <div class="stat"><b>${Math.round(p/S.length*100)}%</b><span>อัตราผ่าน</span></div>`;
+
+ const C={};SUM.forEach(r=>{const k=r.cls;C[k]=C[k]||{n:0,s:0,p:0};C[k].n++;C[k].s+=+r.score;if(r.pass==="ผ่าน")C[k].p++});
+ tcls.innerHTML=`<tr><th>ชั้น/ห้อง</th><th>จำนวน</th><th>เฉลี่ย /30</th><th>ผ่าน</th><th>ไม่ผ่าน</th><th>อัตราผ่าน</th></tr>`+
+ Object.keys(C).sort().map(k=>{const o=C[k],a=o.s/o.n,r=o.p/o.n;
+ return `<tr><td><b>${k}</b></td><td>${o.n}</td><td>${a.toFixed(2)}</td><td>${o.p}</td><td>${o.n-o.p}</td>
+ <td><div style="display:flex;align-items:center;gap:8px"><div class="gb"><i style="width:${r*100}%"></i></div>${Math.round(r*100)}%</div></td></tr>`}).join("");
+
+ const K={};D.forEach(r=>{K[r.cat]=K[r.cat]||{s:0,n:0};K[r.cat].s+=+r.pt;K[r.cat].n++});
+ tcat.innerHTML=`<tr><th>หมวด</th><th>ตอบทั้งหมด</th><th>เฉลี่ย /1.50</th><th>คิดเป็น %</th></tr>`+
+ Object.keys(K).map(k=>{const o=K[k],a=o.s/o.n,pc=a/1.5;return[k,o.n,a,pc]})
+ .sort((x,y)=>x[2]-y[2]).map(x=>`<tr><td><b>${x[0]}</b></td><td>${x[1]}</td><td>${x[2].toFixed(2)}</td>
+ <td><div style="display:flex;align-items:center;gap:8px"><div class="gb${x[3]<.6?' warn':''}"><i style="width:${x[3]*100}%"></i></div>${Math.round(x[3]*100)}%</div></td></tr>`).join("");
+
+ const Qm={};D.forEach(r=>{Qm[r.q]=Qm[r.q]||{s:0,n:0,c:r.cat};Qm[r.q].s+=+r.pt;Qm[r.q].n++});
+ tq.innerHTML=`<tr><th>คำถาม</th><th>หมวด</th><th>ตอบ</th><th>เฉลี่ย</th><th>%</th></tr>`+
+ Object.keys(Qm).map(k=>{const o=Qm[k];return[k,o.c,o.n,o.s/o.n]}).sort((x,y)=>x[3]-y[3]).slice(0,10)
+ .map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3].toFixed(2)}</td>
+ <td><div style="display:flex;align-items:center;gap:8px"><div class="gb warn"><i style="width:${x[3]/1.5*100}%"></i></div>${Math.round(x[3]/1.5*100)}%</div></td></tr>`).join("");
+
+ tstu.innerHTML=`<tr><th>#</th><th>Name</th><th>ห้อง</th><th>เลขที่</th><th>คะแนน</th><th>%</th><th>ผล</th><th>วันเวลา</th></tr>`+
+ [...S].sort((a,b)=>b.score-a.score).map((r,k)=>`<tr><td>${k+1}</td><td>${r.name}</td><td>${r.cls}</td>
+ <td>${r.no}</td><td><b>${(+r.score).toFixed(2)}</b></td><td>${r.pct}%</td>
+ <td><span class="pill ${r.pass==="ผ่าน"?"pass":"fail"}">${r.pass}</span></td><td>${r.date}</td></tr>`).join("");
+}
+function csv(){
+ const S=F();if(!S.length)return alert("ยังไม่มีข้อมูล");
+ let s="Name,ห้อง,เลขที่,คะแนน,เต็ม,ร้อยละ,ผล,วันเวลา\n";
+ S.forEach(r=>s+=`"${r.name}","${r.cls}",${r.no},${r.score},30,${r.pct},${r.pass},"${r.date}"\n`);
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob(["\uFEFF"+s],{type:"text/csv;charset=utf-8"}));
+ a.download="speaking_results_"+(fcls.value||"all")+".csv";a.click();
+}
+</script>
+</body></html>
