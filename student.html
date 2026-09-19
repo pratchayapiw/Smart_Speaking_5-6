@@ -2,17 +2,153 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Smart Speaking | Student</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff4f87">
+<title>Smart Speaking | Student Test</title>
+
 <style>
-<link rel="stylesheet" href="style.css">
+:root{
+  --pink:#ff4f87;
+  --pink-dark:#e83d73;
+  --pink-soft:#fff0f5;
+  --blue:#3f82f7;
+  --blue-soft:#eef5ff;
+  --green:#22a06b;
+  --red:#e5484d;
+  --yellow:#f5b700;
+  --ink:#24324a;
+  --muted:#718096;
+  --line:#e7ebf2;
+  --bg:#f7f9fc;
+  --card:#ffffff;
+  --shadow:0 16px 45px rgba(35,50,74,.10);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Arial,"Noto Sans Thai",Tahoma,sans-serif;
+  background:linear-gradient(180deg,#fff 0%,var(--bg) 100%);
+  color:var(--ink);
+  min-height:100vh;
+}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+.container{width:min(1120px,calc(100% - 32px));margin:auto}
+
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--ink)}
+.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#ff5b92,#ff8eb1);box-shadow:0 8px 18px rgba(255,79,135,.22)}
+.brand small{display:block;color:var(--muted);font-size:11px;font-weight:500;margin-top:2px}
+.navlinks{display:flex;gap:8px}
+.navlinks a{padding:10px 13px;border-radius:12px;font-size:14px;color:#59677d}
+.navlinks a.active,.navlinks a:hover{background:var(--pink-soft);color:var(--pink-dark)}
+
+main{padding:30px 0 60px}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.hero-card{padding:28px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero-card:after{
+  content:"";position:absolute;width:190px;height:190px;border-radius:50%;
+  right:-70px;top:-75px;background:var(--pink-soft);z-index:0;
+}
+.hero-content{position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:7px;background:var(--pink-soft);color:var(--pink-dark);padding:7px 12px;border-radius:999px;font-size:12px;font-weight:800}
+h1{font-size:clamp(28px,4vw,42px);margin:13px 0 8px;line-height:1.1}
+h1 span{color:var(--pink)}
+.lead{margin:0;color:var(--muted);line-height:1.7;max-width:780px}
+
+.form-card{padding:26px}
+.section-title{margin:0 0 18px;font-size:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{margin-bottom:16px}
+label{display:block;font-size:14px;font-weight:800;margin:0 0 7px}
+.req{color:var(--pink)}
+input{
+  width:100%;border:1.5px solid #dce2ec;background:#fff;
+  color:var(--ink);padding:13px 14px;border-radius:13px;outline:none;
+  transition:.18s;
+}
+input:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(255,79,135,.10)}
+input.good{border-color:#36b37e;background:#f6fffb}
+input.bad{border-color:var(--red);background:#fff8f8}
+.help{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+.error{display:none;color:var(--red);font-size:12px;margin-top:5px}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btn{
+  border:0;border-radius:13px;padding:13px 18px;font-weight:800;
+  cursor:pointer;transition:.18s;display:inline-flex;align-items:center;justify-content:center;gap:8px
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-pink{background:var(--pink);color:#fff;box-shadow:0 8px 18px rgba(255,79,135,.20)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-light{background:#f1f4f8;color:#526177}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+#exam{display:none}
+.exam-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px;flex-wrap:wrap}
+.progress-wrap{flex:1;min-width:220px}
+.progress-text{font-size:13px;color:var(--muted);margin-bottom:6px}
+.progress{height:9px;background:#edf0f5;border-radius:99px;overflow:hidden}
+.progress > div{height:100%;background:linear-gradient(90deg,var(--pink),#ff83a9);width:0%;transition:.25s}
+.timer{font-weight:900;color:var(--pink-dark);background:var(--pink-soft);padding:10px 15px;border-radius:12px;min-width:92px;text-align:center}
+.timer.warning{color:#b42318;background:#fff1f0}
+.question-card{padding:28px}
+.q-number{font-size:12px;font-weight:900;color:var(--pink);letter-spacing:.5px}
+.question{font-size:clamp(21px,3vw,30px);font-weight:800;line-height:1.45;margin:10px 0 18px}
+.tip{background:var(--blue-soft);color:#315b9e;padding:12px 14px;border-radius:13px;font-size:13px;line-height:1.6;margin-bottom:18px}
+.rec-box{border:1px dashed #ccd4e2;border-radius:16px;padding:18px;background:#fbfcfe;text-align:center}
+.mic-btn{
+  width:78px;height:78px;border-radius:50%;border:0;background:var(--pink);
+  color:#fff;font-size:30px;cursor:pointer;box-shadow:0 10px 22px rgba(255,79,135,.25);
+}
+.mic-btn.recording{animation:pulse 1s infinite;background:#e5484d}
+@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 0 14px rgba(229,72,77,.10)}}
+.status{font-size:13px;color:var(--muted);margin-top:10px;min-height:20px}
+.transcript{
+  margin-top:15px;padding:13px;border-radius:12px;background:#fff;
+  border:1px solid var(--line);min-height:46px;text-align:left;color:#40506a;line-height:1.55
+}
+.exam-actions{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap}
+.score-card{padding:30px;text-align:center}
+.score-circle{
+  width:150px;height:150px;border-radius:50%;margin:15px auto;
+  display:grid;place-items:center;background:var(--pink-soft);border:10px solid #ffd1df;
+}
+.score-circle strong{font-size:34px;color:var(--pink-dark)}
+.result-note{font-size:15px;color:var(--muted);line-height:1.7}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.stat{background:#f8fafc;border:1px solid var(--line);border-radius:15px;padding:15px}
+.stat b{display:block;font-size:20px;margin-bottom:4px}
+.stat span{font-size:12px;color:var(--muted)}
+.footer{text-align:center;color:#8994a6;font-size:12px;padding:25px 0 35px}
+
+@media(max-width:700px){
+  .nav-inner{min-height:64px}
+  .navlinks a{font-size:12px;padding:8px}
+  .brand small{display:none}
+  .grid2{grid-template-columns:1fr}
+  .hero-card,.form-card,.question-card,.score-card{padding:20px}
+  .summary{grid-template-columns:1fr}
+  .exam-actions .btn{flex:1}
+}
 </style>
 </head>
-<body>
-<div class="wrap">
 
+<body>
 <nav class="nav">
-  <div class="nav-in">
+  <div class="container nav-inner">
     <a class="brand" href="index.html">
       <div class="logo">🎧</div>
       <div>Smart Speaking<small>English for a Brighter You</small></div>
@@ -25,121 +161,134 @@
   </div>
 </nav>
 
-<div id="s1" class="card">
-  <div class="hero-strip">
-    <div class="hero-title">
-      <div class="hero-icon">🎙️</div>
-      <div>
-        <h1>Speaking <span>Test</span></h1>
-        <div class="sub">Listening &amp; Speaking · Final Exam 1/2569 · 20 ข้อ · 30 คะแนน</div>
-      </div>
-    </div>
-    <div style="font-size:42px">🇬🇧</div>
+<main>
+<div class="container">
+
+<section id="setup" class="card hero-card">
+  <div class="hero-content">
+    <span class="badge">🇬🇧 Listening • Speaking • Confidence</span>
+    <h1>Smart <span>Speaking Test</span></h1>
+    <p class="lead">
+      แบบทดสอบออนไลน์เพื่อวัดทักษะการฟังและการพูดภาษาอังกฤษ
+      กรอกข้อมูลเป็นภาษาอังกฤษให้ครบ แล้วกดเริ่มทำแบบทดสอบ
+    </p>
   </div>
+</section>
 
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+<section class="card form-card" id="studentForm">
+  <h2 class="section-title">👤 Student Information</h2>
 
-  <div>
-    <label>First name(English only) *</label>
-    <input id="fn"
-           placeholder="e.g. Somying"
-           autocomplete="off"
-           oninput="chkNamePart('fn','fnErr')"
-           onblur="chkNamePart('fn','fnErr')">
-
-    <div class="err" id="fnErr">
-      ⚠️ English only
+  <div class="grid2">
+    <div class="field">
+      <label for="fn">First Name (English only) <span class="req">*</span></label>
+      <input id="fn" autocomplete="given-name" placeholder="e.g. Somying"
+             oninput="chkNamePart('fn','fnErr')">
+      <div id="fnErr" class="error">กรุณากรอกชื่อเป็นภาษาอังกฤษเท่านั้น เช่น Somying</div>
     </div>
-  </div>
 
-  <div>
-    <label>Surname (English only) *</label>
-    <input id="sn"
-           placeholder="e.g. Jaidee"
-           autocomplete="off"
-           oninput="chkNamePart('sn','snErr')"
-           onblur="chkNamePart('sn','snErr')">
-
-    <div class="err" id="snErr">
-      ⚠️ English only
+    <div class="field">
+      <label for="sn">Surname / Last Name (English only) <span class="req">*</span></label>
+      <input id="sn" autocomplete="family-name" placeholder="e.g. Jaidee"
+             oninput="chkNamePart('sn','snErr')">
+      <div id="snErr" class="error">กรุณากรอกนามสกุลเป็นภาษาอังกฤษเท่านั้น เช่น Jaidee</div>
     </div>
-  </div>
 
-</div>
+    <div class="field">
+      <label for="cl">Class / Room <span class="req">*</span></label>
+      <input id="cl" inputmode="numeric" maxlength="5" placeholder="e.g. 5/3"
+             oninput="cleanClass()">
+      <div id="clErr" class="error">รูปแบบห้องต้องเป็น เช่น 4/1, 5/10</div>
+    </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-
-  <div>
-    <label>Classroom*</label>
-    <input id="cl"
-           placeholder="e.g. 5/3"
-           inputmode="numeric"
-           maxlength="5"
-           oninput="cleanClass()">
-
-    <div class="err" id="clErr">
-      ⚠️ Classroom e.g. 5/3, 5/5, 5/6
+    <div class="field">
+      <label for="no">Student No. <span class="req">*</span></label>
+      <input id="no" type="text" inputmode="numeric" maxlength="2" placeholder="e.g. 1 or 10"
+             oninput="cleanNo()">
+      <div id="noErr" class="error">เลขที่ต้องเป็นตัวเลข 1–99</div>
     </div>
   </div>
 
-  <div>
-    <label>Student number*</label>
-    <input id="no"
-           type="number"
-           min="1"
-           max="99"
-           step="1"
-           placeholder="e.g. 1 or 10"
-           inputmode="numeric"
-           oninput="cleanNo()">
+  <div class="help">
+    ชื่อและนามสกุลใช้ภาษาอังกฤษเท่านั้น • ชั้น/ห้อง เช่น 4/1 • เลขที่ เช่น 1 หรือ 10
+  </div>
 
-    <div class="err" id="noErr">
-      ⚠️ Student number 1–99
+  <div class="actions">
+    <button class="btn btn-pink" onclick="start()">🎤 Start the Speaking Test ▶</button>
+  </div>
+</section>
+
+<section id="exam">
+  <div class="exam-top">
+    <div class="progress-wrap">
+      <div id="progressText" class="progress-text">Question 1 of 20, PER=1.5, PASS=.6</div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+    <div id="timer" class="timer">90s</div>
+  </div>
+
+  <div class="card question-card">
+    <div class="q-number" id="qNumber">QUESTION 1</div>
+    <div class="question" id="question"></div>
+
+    <div class="tip">
+      🎧 ฟังคำถามในใจ/อ่านคำถาม แล้วกดไมโครโฟนเพื่อพูดคำตอบเป็นภาษาอังกฤษ
+      ระบบจะใช้ Speech Recognition ช่วยตรวจคำตอบ
+    </div>
+
+    <div class="rec-box">
+      <button id="micBtn" class="mic-btn" onclick="toggleRecording()" aria-label="Start speaking">🎙️</button>
+      <div id="status" class="status">กดไมโครโฟนเพื่อเริ่มพูด</div>
+      <div id="transcript" class="transcript">ยังไม่มีคำตอบ</div>
+    </div>
+
+    <div class="exam-actions">
+      <button id="nextBtn" class="btn btn-pink" onclick="nextQuestion()" disabled>
+        Next Question →
+      </button>
     </div>
   </div>
+</section>
 
-</div>
-  <button class="btn" onclick="start()"> Start the Exam ▶</button>
-
-  <div class="step-row">
-    <div class="step">🎧<b>Listen</b><span>ฟังและทำความเข้าใจ</span></div>
-    <div class="step">🧠<b>Think</b><span>คิดก่อนตอบ</span></div>
-    <div class="step">🎙️<b>Speak</b><span>พูดอย่างมั่นใจ</span></div>
+<section id="result" class="card score-card" style="display:none">
+  <span class="badge">🎉 Test Completed</span>
+  <h2>Speaking Test Result</h2>
+  <div class="score-circle"><strong id="score">0</strong></div>
+  <div class="summary">
+    <div class="stat"><b id="correct">0</b><span>Correct</span></div>
+    <div class="stat"><b id="answered">0</b><span>Answered</span></div>
+    <div class="stat"><b id="percent">0%</b><span>Percentage</span></div>
   </div>
-  <div class="note">📱 ใช้ Chrome/Edge · อนุญาตไมโครโฟน · ข้อละ <b>90 วินาที</b> · ข้อสอบสุ่มใหม่ทุกครั้ง</div>
-</div>
-
-<div id="s2" class="card hide">
-  <div style="display:flex;justify-content:space-between;font-size:.85rem;color:var(--mut)">
-    <span id="pg"></span><span id="sc"></span>
+  <p id="resultNote" class="result-note"></p>
+  <div class="actions" style="justify-content:center">
+    <a class="btn btn-blue" href="index.html">⌂ Back to Home</a>
+    <button class="btn btn-light" onclick="location.reload()">↻ Try Again</button>
   </div>
-  <div class="bar"><i id="pb"></i></div>
-  <span class="tag" id="cat"></span><span class="clock" id="ck"></span>
-  <div class="tbar"><i id="tp" style="width:100%"></i></div>
-  <div class="q" id="qt"></div>
-  <div class="note">🗣️ กดไมค์แล้วพูด (เต็ม 1.50) หรือเลือกตัวเลือก (เต็ม 1.00) — หมดเวลาตรวจอัตโนมัติ</div>
-  <button class="mic" id="mic" onclick="rec()">🎙️ กดเพื่อพูด</button>
-  <div class="box" id="tr"></div><div id="opts"></div><div id="fb"></div>
-  <button class="btn" id="nx">ตรวจคำตอบ ✓</button>
-</div>
-
-<div id="s3" class="card hide">
-  <h2>📊 ผลการสอบของคุณ</h2>
-  <div id="rs"></div>
-  <button class="btn" onclick="location.reload()">กลับหน้าแรก</button>
-</div>
-
-<div class="footer">Smart Speaking · Listen • Think • Speak • Be Confident 💗</div>
+</section>
 
 </div>
+</main>
+
+<footer class="footer">
+  Smart Speaking · Speaking Test 1/2569 · Learn today, speak tomorrow. 💗
+</footer>
+
 <script>
-/* ========== ⚙️ CONFIG : แก้ 2 บรรทัดนี้เท่านั้น ========== */
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzYTyCOePtMvC0nyHSl0WddjPxZ5c6Or0snhRX0ujR6rbeiVglPlAKaC0O4osgo1TIQ/exec";   // เช่น https://script.google.com/macros/s/AKfy.../exec
-const SEC = 90;                                   // เวลาต่อข้อ (วินาที)
-const TOTAL=20, PER=1.5, PASS=.6;
+"use strict";
 
-/* ========== QUESTION BANK ========== */
-const BANK=[
+/* =========================
+   CONFIG
+========================= */
+const SEC = 90;
+const TOTAL = 20, PER=1.5, PASS=.6;
+const PER = 1.5;
+const PASS = .6;
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzYTyCOePtMvC0nyHSl0WddjPxZ5c6Or0snhRX0ujR6rbeiVglPlAKaC0O4osgo1TIQ/exec';
+
+/* =========================
+   QUESTION BANK
+   Original bank content is retained from the uploaded student.html.
+========================= */
+const BANK = [
 {c:"Ability",q:"Can you sing?",k:[["yes","yeah","no","nah"],["can"]],a:"Yes, I can.",
  alt:["Yes, I can.","Yeah, I can.","No, I can't.","Nah, I can't.","Yes, but only a little.","Yeah, but not very well."]},
 {c:"Ability",q:"Can you speak Spanish?",k:[["no","nah","yes"],["can"]],a:"No, I can't.",
@@ -215,152 +364,396 @@ const BANK=[
 {c:"Location",q:"Tell your friend to put the sugar bowl on the counter.",k:[["pick up","take"],["sugar bowl"],["put"],["counter"]],a:"Pick up the sugar bowl and put it on the counter.",
  alt:["Pick up the sugar bowl and put it on the counter, next to the coffee pot.","Take the sugar bowl and put it on the counter.","Pick up the sugar bowl and put it on the counter."]}];
 
-/* ========== NORMALIZER ========== */
-const ONES=["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve",
-"thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
-const TENS=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
-const ORD={1:"first",2:"second",3:"third",4:"fourth",5:"fifth",6:"sixth",7:"seventh",8:"eighth",9:"ninth",
-10:"tenth",11:"eleventh",12:"twelfth",13:"thirteenth",14:"fourteenth",15:"fifteenth",16:"sixteenth",
-17:"seventeenth",18:"eighteenth",19:"nineteenth",20:"twentieth",21:"twenty first",22:"twenty second",
-23:"twenty third",24:"twenty fourth",25:"twenty fifth",26:"twenty sixth",27:"twenty seventh",
-28:"twenty eighth",29:"twenty ninth",30:"thirtieth",31:"thirty first"};
-function n2w(n){n=+n;if(n<20)return ONES[n];if(n<100){const o=n%10;return TENS[(n/10)|0]+(o?" "+ONES[o]:"")}return""+n}
-const CONTRA=[[/\bit's\b/g,"it is"],[/\bi'm\b/g,"i am"],[/\bim\b/g,"i am"],[/\bthey're\b/g,"they are"],
-[/\btheyre\b/g,"they are"],[/\bthat's\b/g,"that is"],[/\bwhat's\b/g,"what is"],[/\bdon'?t\b/g,"do not"],
-[/\bdoesn'?t\b/g,"does not"],[/\bcan'?t\b/g,"can not"],[/\bcannot\b/g,"can not"],[/\bisn'?t\b/g,"is not"],
-[/\baren'?t\b/g,"are not"],[/\bo'clock\b/g,"oclock"],[/\bits\b/g,"it is"]];
-function norm(s){
- let t=" "+String(s).toLowerCase()+" ";
- CONTRA.forEach(c=>t=t.replace(c[0],c[1]));
- t=t.replace(/\b(\d{1,2})[:.](\d{2})\b/g,(m,h,mi)=>{const H=n2w(h);mi=+mi;
-   return mi===0?H+" oclock":mi<10?H+" oh "+ONES[mi]:H+" "+n2w(mi)});
- t=t.replace(/\b(\d{1,2})\s*(st|nd|rd|th)\b/g,(m,d)=>ORD[+d]||n2w(d));
- t=t.replace(/\b(\d{1,3})\b/g,(m,d)=>n2w(d));
- t=t.replace(/\ba\s+quarter\b/g,"quarter").replace(/\bfifteen\s+past\b/g,"quarter past");
- t=t.replace(/\bafter\b/g,"past").replace(/\bbefore\b/g,"to");
- t=t.replace(/[^a-z ]/g," ").replace(/\s+/g," ");
- return " "+t.trim()+" ";
-}
-function sim(a,b){
- const A=a.trim().split(" ").filter(Boolean),B=b.trim().split(" ").filter(Boolean);
- if(!A.length||!B.length)return 0;
- const bag={};B.forEach(w=>bag[w]=(bag[w]||0)+1);
- let hit=0;A.forEach(w=>{if(bag[w]>0){bag[w]--;hit++}});
- const p=hit/A.length,r=hit/B.length;return(p+r)?2*p*r/(p+r):0;
+/* =========================
+   STATE
+========================= */
+let Q = [];
+let qi = 0;
+let score = 0;
+let answered = 0;
+let remaining = SEC;
+let timerId = null;
+let recognition = null;
+let isRecording = false;
+let lastTranscript = "";
+let stream = null;
+let recorder = null;
+let chunks = [];
+
+/* =========================
+   DOM
+========================= */
+const $ = id => document.getElementById(id);
+const setup = $("setup");
+const exam = $("exam");
+const result = $("result");
+const fn = $("fn");
+const sn = $("sn");
+const cl = $("cl");
+const no = $("no");
+const questionEl = $("question");
+const qNumber = $("qNumber");
+const progressText = $("progressText");
+const progressBar = $("progressBar");
+const timerEl = $("timer");
+const micBtn = $("micBtn");
+const statusEl = $("status");
+const transcriptEl = $("transcript");
+const nextBtn = $("nextBtn");
+
+/* =========================
+   VALIDATION
+========================= */
+const NAME_PART_RE = /^[A-Za-z]+(?:[.'-][A-Za-z]+)*$/;
+
+function cleanEnglishInput(id){
+  const el = $(id);
+  const raw = el.value;
+  const cleaned = raw.replace(/[^A-Za-z.'-]/g,"");
+  if(cleaned !== raw) el.value = cleaned;
+  return el.value.trim();
 }
 
-/* ========== NAME CHECK ========== */
-const NAME_RE=/^[A-Za-z][A-Za-z.'-]*(?:\s+[A-Za-z][A-Za-z.'-]*)+$/;
-function chkName(){
- const raw=nm.value, cleaned=raw.replace(/[^A-Za-z.'\- ]/g,"").replace(/\s{2,}/g," ");
- if(cleaned!==raw){const p=nm.selectionStart;nm.value=cleaned;try{nm.setSelectionRange(p-1,p-1)}catch(e){}}
- const ok=NAME_RE.test(nm.value.trim());
- nm.className=nm.value.trim()?(ok?"good":"bad"):"";
- nmErr.style.display=(nm.value.trim()&&!ok)?"block":"none";return ok;
+function chkNamePart(id, errId){
+  const el = $(id);
+  const value = cleanEnglishInput(id);
+  const ok = NAME_PART_RE.test(value);
+  el.className = value ? (ok ? "good" : "bad") : "";
+  $(errId).style.display = (value && !ok) ? "block" : "none";
+  return ok;
 }
-function titleCase(s){return s.trim().toLowerCase().split(/\s+/).map(w=>w[0].toUpperCase()+w.slice(1)).join(" ")}
 
-/* ========== STATE ========== */
-const sh=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
-let Q=[],i=0,total=0,log=[],pick=null,tx="",rg=null,busy=false;
-let stream=null,mr=null,chunks=[],aURL="",tmr=null,left=SEC,locked=false;
+function cleanClass(){
+  const el = $("cl");
+  let v = el.value.replace(/[^0-9/]/g,"");
+  const parts = v.split("/");
+  if(parts.length > 2) v = parts[0] + "/" + parts.slice(1).join("");
+  if(v.length > 5) v = v.slice(0,5);
+  el.value = v;
+  const ok = /^[1-6]\/[1-9][0-9]?$/.test(v);
+  el.className = v ? (ok ? "good" : "bad") : "";
+  $("clErr").style.display = (v && !ok) ? "block" : "none";
+  return ok;
+}
 
+function cleanNo(){
+  const el = $("no");
+  let v = el.value.replace(/\D/g,"");
+  if(v) v = String(Math.max(1, Math.min(99, parseInt(v,10))));
+  el.value = v;
+  const ok = /^[1-9][0-9]?$/.test(v);
+  el.className = v ? (ok ? "good" : "bad") : "";
+  $("noErr").style.display = (v && !ok) ? "block" : "none";
+  return ok;
+}
+
+function titleCase(s){
+  return s.trim().toLowerCase().split(/\s+/)
+    .map(w => w ? w[0].toUpperCase() + w.slice(1) : "")
+    .join(" ");
+}
+
+/* =========================
+   HELPERS
+========================= */
+function shuffle(arr){
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function normalize(s){
+  return String(s || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9\s]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function accepted(question){
+  return [question.a, ...(question.alts || [])]
+    .map(normalize)
+    .filter(Boolean);
+}
+
+function isCorrect(spoken, question){
+  const s = normalize(spoken);
+  if(!s) return false;
+
+  const answers = accepted(question);
+  if(answers.includes(s)) return true;
+
+  // Exact answer phrase contained in a slightly longer recognized sentence.
+  return answers.some(a => {
+    if(a.length < 3) return false;
+    return (" " + s + " ").includes(" " + a + " ");
+  });
+}
+
+/* =========================
+   SPEECH RECOGNITION
+========================= */
+function setupRecognition(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR) return null;
+
+  const r = new SR();
+  r.lang = "en-US";
+  r.interimResults = true;
+  r.continuous = false;
+  r.maxAlternatives = 3;
+
+  r.onstart = () => {
+    isRecording = true;
+    micBtn.classList.add("recording");
+    micBtn.textContent = "⏹️";
+    statusEl.textContent = "กำลังฟัง... กรุณาพูดคำตอบ";
+  };
+
+  r.onresult = e => {
+    let finalText = "";
+    let interim = "";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const t = e.results[i][0].transcript;
+      if(e.results[i].isFinal) finalText += t;
+      else interim += t;
+    }
+    const combined = (finalText || interim).trim();
+    if(combined){
+      lastTranscript = combined;
+      transcriptEl.textContent = combined;
+    }
+  };
+
+  r.onerror = e => {
+    statusEl.textContent =
+      e.error === "not-allowed"
+      ? "ไม่อนุญาตให้ใช้ไมโครโฟน กรุณาเปิดสิทธิ์ Microphone"
+      : "ไม่สามารถรับเสียงได้ กรุณาลองใหม่";
+    stopRecording();
+  };
+
+  r.onend = () => stopRecording();
+
+  return r;
+}
+
+function toggleRecording(){
+  if(isRecording){
+    stopRecording();
+    return;
+  }
+
+  if(!recognition) recognition = setupRecognition();
+
+  if(!recognition){
+    statusEl.textContent = "Browser นี้ไม่รองรับ Speech Recognition";
+    return;
+  }
+
+  lastTranscript = "";
+  transcriptEl.textContent = "กำลังฟัง...";
+  try {
+    recognition.start();
+  } catch(e) {
+    // Recognition may still be closing from a previous run.
+    statusEl.textContent = "กรุณารอสักครู่แล้วกดไมโครโฟนอีกครั้ง";
+  }
+}
+
+function stopRecording(){
+  isRecording = false;
+  micBtn.classList.remove("recording");
+  micBtn.textContent = "🎙️";
+  if(lastTranscript){
+    statusEl.textContent = "รับคำตอบแล้ว ✓";
+    nextBtn.disabled = false;
+  } else {
+    statusEl.textContent = "ยังไม่ได้ยินคำตอบ กรุณากดไมโครโฟนแล้วลองใหม่";
+  }
+}
+
+/* =========================
+   MEDIA RECORDING
+   Keeps microphone permission active during the test when supported.
+========================= */
+async function startMic(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    if(window.MediaRecorder){
+      recorder = new MediaRecorder(stream);
+      recorder.ondataavailable = e => { if(e.data.size) chunks.push(e.data); };
+      recorder.onstart = () => { chunks=[]; };
+      recorder.start();
+    }
+  } catch(e) {
+    // Speech Recognition can still work in some browsers without this stream.
+  }
+}
+
+/* =========================
+   START TEST
+========================= */
 async function start(){
- if(!nm.value.trim()||!cl.value.trim()||!no.value.trim())return alert("กรุณากรอกชื่อ ชั้น และเลขที่ให้ครบ");
- if(!chkName()){nm.focus();return alert("❌ ชื่อต้องเป็นภาษาอังกฤษ และมีทั้งชื่อ–นามสกุล\n\nตัวอย่าง: Somying Jaidee")}
- nm.value=titleCase(nm.value);
- try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
- catch(e){if(!confirm("เข้าถึงไมโครโฟนไม่ได้ — ทำต่อแบบเลือกตัวเลือกอย่างเดียวไหม?"))return}
- Q=sh(BANK).slice(0,TOTAL);s1.classList.add("hide");s2.classList.remove("hide");show();
-}
-function show(){
- const q=Q[i];pick=null;tx="";aURL="";locked=false;
- cat.textContent=q.c;qt.textContent=q.q;
- pg.textContent=`ข้อ ${i+1} / ${TOTAL}`;sc.textContent=`คะแนน ${total.toFixed(2)} / 30`;
- pb.style.width=((i+1)/TOTAL*100)+"%";
- tr.innerHTML='<span style="color:#64748b">คำพูดของคุณจะแสดงที่นี่…</span>';
- fb.innerHTML="";nx.textContent="ตรวจคำตอบ ✓";nx.onclick=next;
- mic.textContent="🎙️ กดเพื่อพูด";mic.disabled=false;
- const pool=BANK.filter(x=>x.c===q.c&&x.a!==q.a);
- const opts=sh([q.a,...sh(pool).slice(0,3).map(x=>x.a)]);
- const box=document.getElementById("opts");box.innerHTML="";
- opts.forEach(t=>{const b=document.createElement("button");b.className="opt";b.textContent=t;
-  b.onclick=()=>sel(b,t);box.appendChild(b)});
- startTimer();
-}
-function sel(el,t){document.querySelectorAll(".opt").forEach(e=>e.classList.remove("sel"));el.classList.add("sel");pick=t}
-function startTimer(){clearInterval(tmr);left=SEC;paint();
- tmr=setInterval(()=>{left--;paint();if(left<=0){clearInterval(tmr);if(busy)stopAll();setTimeout(next,400)}},1000)}
-function paint(){const m=Math.floor(left/60),s=left%60;
- ck.textContent=(m?m+":"+String(s).padStart(2,"0"):left+"s");
- ck.className="clock"+(left<=10?" low":"");tp.style.width=(left/SEC*100)+"%"}
+  const firstOk = chkNamePart("fn","fnErr");
+  const lastOk = chkNamePart("sn","snErr");
+  const classOk = cleanClass();
+  const noOk = cleanNo();
 
-function rec(){
- if(busy)return stopAll();
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR)return alert("เบราว์เซอร์นี้ไม่รองรับการรับเสียง กรุณาใช้ Chrome/Edge");
- busy=true;mic.classList.add("rec");mic.textContent="⏹️ กำลังฟัง… (กดเพื่อหยุด)";
- rg=new SR();rg.lang="en-US";rg.interimResults=true;rg.continuous=true;rg.maxAlternatives=3;
- rg.onresult=e=>{let s="";for(const r of e.results)s+=r[0].transcript;tx=s;tr.textContent=s};
- rg.onerror=()=>{};
- rg.onend=()=>{busy=false;mic.classList.remove("rec");mic.textContent="🎙️ กดเพื่อพูด"};
- rg.start();
- if(stream){chunks=[];try{mr=new MediaRecorder(stream);mr.ondataavailable=e=>chunks.push(e.data);
-  mr.onstop=()=>{aURL=URL.createObjectURL(new Blob(chunks,{type:"audio/webm"}))};mr.start()}catch(e){}}
-}
-function stopAll(){try{rg&&rg.stop()}catch(e){}try{mr&&mr.state==="recording"&&mr.stop()}catch(e){}
- busy=false;mic.classList.remove("rec");mic.textContent="🎙️ กดเพื่อพูด"}
+  if(!firstOk || !lastOk || !classOk || !noOk){
+    alert(
+      "กรุณาตรวจสอบข้อมูลให้ครบถ้วน\n\n" +
+      "• ชื่อและนามสกุล: ภาษาอังกฤษเท่านั้น\n" +
+      "• ชั้น/ห้อง: เช่น 4/1\n" +
+      "• เลขที่: เช่น 1 หรือ 10"
+    );
+    return;
+  }
 
-function grade(q){
- let pt=0,mode="ไม่ตอบ";const said=tx.trim();
- const ACC=(q.alt&&q.alt.length)?q.alt:[q.a];
- if(said){
-  const t=norm(said);
-  const kg=(q.k&&q.k.length)?(q.k.filter(g=>g.some(w=>t.includes(norm(w).trim()))).length/q.k.length):0;
-  let best=0;ACC.forEach(x=>{const s=sim(t,norm(x));if(s>best)best=s});
-  const boost=best>=.80?1:best>=.65?.85:best;
-  pt=Math.round(PER*Math.min(Math.max(kg,boost),1)*4)/4;
-  mode="Speaking ≈ "+Math.round(best*100)+"%";
- }else if(pick){pt=pick===q.a?1:0;mode="Choice"}
- return{pt,mode,said:said||pick||"(ไม่ตอบ)",acc:ACC};
+  fn.value = titleCase(fn.value);
+  sn.value = titleCase(sn.value);
+
+  if(!Array.isArray(BANK) || BANK.length === 0){
+    alert("ไม่พบคลังข้อสอบ กรุณาตรวจสอบ BANK ในไฟล์ student.html");
+    return;
+  }
+
+  await startMic();
+
+  Q = shuffle(BANK).slice(0, Math.min(TOTAL, BANK.length));
+  qi = 0;
+  score = 0;
+  answered = 0;
+
+  setup.style.display = "none";
+  exam.style.display = "block";
+  result.style.display = "none";
+
+  showQuestion();
 }
-function next(){
- if(locked)return;locked=true;clearInterval(tmr);
- if(busy){stopAll();locked=false;return setTimeout(next,500)}
- const q=Q[i],g=grade(q);total+=g.pt;mic.disabled=true;
- log.push({no:i+1,cat:q.c,q:q.q,ans:g.said,model:g.acc.join(" / "),pt:g.pt,mode:g.mode,audio:aURL,used:SEC-left});
- const cls=g.pt>=1.25?"g":g.pt>=.75?"y":"r";
- fb.innerHTML=`<div class="fb ${cls}">${g.pt>=1.25?"✅ ดีมาก":g.pt>=.75?"🟡 ใช้ได้ พูดให้ครบประโยค":"❌ ยังไม่ตรง"} · ${g.pt.toFixed(2)}/1.50 <span style="font-weight:400;opacity:.8">(${g.mode})</span>
- <div style="font-weight:400;margin-top:8px">📌 <b>คำตอบที่ยอมรับได้:</b><ul>${g.acc.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>`;
- sc.textContent=`คะแนน ${total.toFixed(2)} / 30`;
- nx.textContent=i<TOTAL-1?"ข้อถัดไป →":"ดูผลสอบ 🏁";
- nx.onclick=()=>{i++;i<TOTAL?show():finish()};
+
+/* =========================
+   QUESTION FLOW
+========================= */
+function showQuestion(){
+  clearInterval(timerId);
+  remaining = SEC;
+  lastTranscript = "";
+  transcriptEl.textContent = "ยังไม่มีคำตอบ";
+  statusEl.textContent = "กดไมโครโฟนเพื่อเริ่มพูด";
+  nextBtn.disabled = true;
+
+  const q = Q[qi];
+  qNumber.textContent = "QUESTION " + (qi + 1);
+  questionEl.textContent = q.q;
+  progressText.textContent = `Question ${qi + 1} of ${Q.length}`;
+  progressBar.style.width = `${((qi + 1) / Q.length) * 100}%`;
+  timerEl.textContent = remaining + "s";
+  timerEl.classList.remove("warning");
+
+  timerId = setInterval(() => {
+    remaining--;
+    timerEl.textContent = remaining + "s";
+
+    if(remaining <= 15) timerEl.classList.add("warning");
+
+    if(remaining <= 0){
+      clearInterval(timerId);
+      nextQuestion();
+    }
+  }, 1000);
 }
-function finish(){
- const pct=total/30,pass=pct>=PASS;
- const r={name:nm.value.trim(),cls:cl.value.trim(),no:no.value.trim(),score:+total.toFixed(2),
-  pct:Math.round(pct*100),pass,date:new Date().toLocaleString("th-TH"),
-  detail:log.map(l=>({no:l.no,cat:l.cat,q:l.q,ans:l.ans,pt:l.pt,mode:l.mode,used:l.used}))};
- const by={};log.forEach(l=>{by[l.cat]=by[l.cat]||[0,0];by[l.cat][0]+=l.pt;by[l.cat][1]+=PER});
- s2.classList.add("hide");s3.classList.remove("hide");
- rs.innerHTML=`<div class="score">${total.toFixed(2)} / 30</div>
- <div style="text-align:center;margin-bottom:16px">
- <b style="color:${pass?'var(--ok)':'var(--bad)'}">${pass?"🎉 ผ่านเกณฑ์":"📚 ยังไม่ผ่าน (เกณฑ์ 18/30)"}</b>
- <div class="note">${r.name} · ${r.cls} · เลขที่ ${r.no} · ${r.pct}%</div>
- <div class="note" id="sync">⏳ กำลังส่งผลให้ครู…</div></div>
- <h2>คะแนนรายหมวด</h2><div class="grid">${Object.entries(by).map(([k,v])=>
- `<div class="stat"><b>${v[0].toFixed(1)}</b><span>${k}<br>เต็ม ${v[1].toFixed(1)}</span></div>`).join("")}</div>
- <h2 style="margin-top:20px">รายละเอียด + เสียงย้อนหลัง</h2><div style="overflow-x:auto"><table>
- <tr><th>#</th><th>คำถาม</th><th>คุณตอบ</th><th>คำตอบที่ยอมรับ</th><th>วิ</th><th>คะแนน</th><th>เสียง</th></tr>
- ${log.map(l=>`<tr><td>${l.no}</td><td>${l.q}</td><td>${l.ans}</td><td style="font-size:.78rem">${l.model}</td><td>${l.used}</td>
- <td style="color:${l.pt>=1.25?'#86efac':l.pt>=.75?'#fcd34d':'#fca5a5'}">${l.pt.toFixed(2)}</td>
- <td>${l.audio?`<audio controls src="${l.audio}"></audio>`:"–"}</td></tr>`).join("")}</table></div>`;
- if(SHEET_URL.indexOf("http")===0){
-  fetch(SHEET_URL,{method:"POST",body:JSON.stringify(r)})
-   .then(()=>{const e=document.getElementById("sync");if(e)e.textContent="☁️ ส่งผลให้ครูเรียบร้อยแล้ว"})
-   .catch(()=>{const e=document.getElementById("sync");if(e)e.textContent="⚠️ ส่งไม่สำเร็จ กรุณาแจ้งครู"});
- }else{const e=document.getElementById("sync");if(e)e.textContent="⚠️ ยังไม่ได้ตั้งค่า SHEET_URL";}
+
+function nextQuestion(){
+  if(!Q[qi]) return;
+
+  clearInterval(timerId);
+
+  if(isRecording && recognition){
+    try { recognition.stop(); } catch(e) {}
+  }
+
+  if(lastTranscript.trim()){
+    answered++;
+    if(isCorrect(lastTranscript, Q[qi])) score += PER;
+  }
+
+  qi++;
+
+  if(qi >= Q.length){
+    finish();
+  } else {
+    showQuestion();
+  }
 }
+
+/* =========================
+   FINISH + GOOGLE SHEETS
+========================= */
+async function finish(){
+  clearInterval(timerId);
+
+  if(stream){
+    try {
+      if(recorder && recorder.state !== "inactive") recorder.stop();
+    } catch(e) {}
+    stream.getTracks().forEach(t => t.stop());
+  }
+
+  exam.style.display = "none";
+  result.style.display = "block";
+
+  const maxScore = Q.length * PER;
+  const percent = maxScore ? (score / maxScore) * 100 : 0;
+  const passedResult = percent >= (PASS * 100);
+
+  $("score").textContent = score.toFixed(2);
+  $("correct").textContent = Math.round(score / PER);
+  $("answered").textContent = answered;
+  $("percent").textContent = percent.toFixed(0) + "%";
+
+  $("resultNote").innerHTML = passedResult
+    ? "ผลการทดสอบ: ผ่านเกณฑ์ที่กำหนด 🎉<br>คะแนนของคุณถูกบันทึกสำหรับการติดตามผล"
+    : "ผลการทดสอบ: ยังไม่ถึงเกณฑ์ที่กำหนด 💪<br>ฝึกฝนเพิ่มเติมแล้วลองอีกครั้ง";
+
+  const fullName =
+    (fn.value.trim() + " " + sn.value.trim()).replace(/\s+/g," ");
+
+  const r = {
+    name: fullName,
+    firstName: fn.value.trim(),
+    lastName: sn.value.trim(),
+    cls: cl.value.trim(),
+    no: no.value.trim(),
+    score: +score.toFixed(2),
+    totalQuestions: Q.length,
+    maxScore: +maxScore.toFixed(2),
+    percentage: +percent.toFixed(2),
+    answered: answered,
+    timestamp: new Date().toISOString()
+  };
+
+  if(SHEET_URL){
+    try {
+      await fetch(SHEET_URL, {
+        method:"POST",
+        mode:"no-cors",
+        body:JSON.stringify(r)
+      });
+    } catch(e) {
+      console.warn("Could not send score to Google Sheets:", e);
+    }
+  }
+}
+
+/* =========================
+   SAFETY
+========================= */
+window.addEventListener("beforeunload", () => {
+  clearInterval(timerId);
+  if(stream) stream.getTracks().forEach(t => t.stop());
+});
 </script>
 </body>
 </html>
